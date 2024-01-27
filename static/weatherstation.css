@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik');
+.flex-container {
+    width: 95vw;
+    height: 95vh;
+    margin: auto;
+    border-radius: 25px;
+    background: #FF0000;
+    font-family: 'Rubik', sans-serif;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.datecontainer {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.weathercontainer {
+    height: 55%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.temperaturecol {
+    height: 100%;
+    width: 60%;
+    vertical-align: middle;
+    text-align: center;
+    align-items: center;
+}
+
+.daterow {
+    height: 100%;
+    width: 100%;
+    margin: 10px;
+    vertical-align: middle;
+    text-align: center;
+    display: table;
+}
+
+.datevalue {
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.otherweathercol {
+    height: 100%;
+    width: 40%;
+    vertical-align: middle;
+    text-align: center;
+    align-items: flex-start;
+}
+
+.otherweathercontainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.spacerrow {
+    width: 100%;
+    height: 10%;
+    vertical-align: middle;
+    text-align: left;
+    display: table;
+}
+
+.windspeedrow {
+    width: 100%;
+    height: 30%;
+    vertical-align: middle;
+    text-align: left;
+    #display: table;
+    display: table;
+}
+
+.windspeedvalue {
+    display: table-cell;
+}
+
+.pressurehumidityrow {
+    width: 100%;
+    height: 25%;
+    vertical-align: middle;
+    text-align: left;
+    display: table;
+}
+
+.pressurehumidityvalue {
+    display: table-cell;
+}
+
