@@ -3,7 +3,7 @@ click==8.1.7
 colorzero==2.0
 flask==3.0.1
 gpiozero==2.0
-lgpio=0.0.0.2
+lgpio==0.0.0.2
 importlib-metadata==7.0.1
 itsdangerous==2.1.2
 Jinja2==3.1.3
