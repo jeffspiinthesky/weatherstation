@@ -12,7 +12,7 @@ class WeatherServer:
     def __init__(self, ntp_host, port, bme280_sda, bme280_scl, wind_speed_pin):
         # Set up temperature sensor
         adcpin = 4
-        self.sensor = machine.ADC(adcpin)
+        self.sensor = ADC(adcpin)
         # Connect to Wifi
         self.wifi_connection = Wifi()
         self.ip = self.wifi_connection.connect()
