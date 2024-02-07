@@ -7,8 +7,8 @@ from machine import Pin
 class Wifi:
     def __init__(self):
         try:
-            self.led = Pin(25, Pin.OUT)
-            self.led.value(0)
+            self.led = Pin("LED", Pin.OUT)
+            self.led.off()
             f = open('./wifi_creds.json')
             self.data = load(f)
             for credentials in self.data['Credentials']:
@@ -35,7 +35,7 @@ class Wifi:
                 else:
                     ip = self.wlan.ifconfig()[0]
                     print(f'Connected on {ip}')
-                    self.led.value(1)
+                    self.led.on()
                     state = 'ON'
                     return ip
                 
