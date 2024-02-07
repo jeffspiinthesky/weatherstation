@@ -1,7 +1,7 @@
 from adafruit_bme280 import basic as adafruit_bme280
 from busio import I2C
 from microcontroller import pin
-import time
+from time import sleep
 
 class BME280Reader:    
     def __init__(self, sda_pin, scl_pin):

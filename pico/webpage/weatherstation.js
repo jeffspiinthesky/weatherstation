@@ -11,7 +11,7 @@ function getData() {
     console.log('Getting data');
     $.ajax({
         type: 'GET',
-        url: 'https://jksmith.ddns.net:60443/weatherdata/',
+        url: '/data',
         dataType: 'json'
 
     })
