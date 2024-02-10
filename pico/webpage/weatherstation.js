@@ -25,8 +25,9 @@ function getData() {
             $('#date').textfill({maxFontPixels: 1000, widthOnly: true});
             $('#tempvalue').html(Math.round(data.temperature) + '&#176;C');
             $('#temperature').textfill({maxFontPixels: 1000});
-            $('#windvalue').text('Wind: ' + (Math.round(data.wind_speed * 100) / 100).toFixed(2) + 'mph');
-            $('#windspeed').textfill({maxFontPixels: 1000,});
+            //$('#windvalue').text('Wind: ' + (Math.round(data.wind_speed * 100) / 100).toFixed(2) + 'mph');
+            $('#windvalue').text('Other: ' );
+            //$('#windspeed').textfill({maxFontPixels: 1000,});
             $('#pressurevalue').text('P: ' + data.pressure + 'hPa');
             $('#humidityvalue').text('H: ' + data.humidity + '%');
             var windSize = parseInt($('#windvalue').css('font-size'));
