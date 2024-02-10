@@ -2,7 +2,7 @@
 set -e
 tar xvfz Adafruit_Blinka-*.tar.gz
 tar xvfz Adafruit_Python_PlatformDetect*.tar.gz
-unzip adafruit-circuitpython-bundle-py-*.zip
+unzip adafruit-circuitpython-bundle-*.zip
 mkdir -p adafruit_blinka
 mkdir -p adafruit_blinka/agnostic
 mkdir -p adafruit_blinka/microcontroller
@@ -46,7 +46,8 @@ cp Adafruit_Blinka-*/src/adafruit_blinka/board/raspberrypi/pico.py ./adafruit_bl
 # Now we need the Blinka microcontroller code
 # __init__.py
 # pin.py
-cp Adafruit_Blinka-8.31.0/src/microcontroller/* ./microcontroller/
+cp Adafruit_Blinka-*/src/microcontroller/* ./microcontroller/
+
 
 # Now need to pull for the rp2040 chip (pico)
 cp Adafruit_Blinka-*/src/adafruit_blinka/microcontroller/rp2040/i2c.py ./adafruit_blinka/microcontroller/rp2040/
@@ -61,14 +62,14 @@ cp Adafruit_Blinka-*/src/adafruit_blinka/microcontroller/rp2040/__init__.py ./ad
 # __init__.py
 # protocol.py
 # These are the only files in the Adafruit circuitpython libs for bme280 so copying is easy
-cp adafruit-circuitpython-bundle-py-20240127/lib/adafruit_bme280/* adafruit_bme280/
+cp adafruit-circuitpython-bundle-*/lib/adafruit_bme280/* adafruit_bme280/
 
 # Next is the generic_micropython directory. We need
 # i2c.py  
 # __init__.py  
 # spi.py
 # Like with the last files, these are the only files in the Adafruit_Blinka-8.31.0/src/adafruit_blinka/microcontroller/generic_micropython so we can copy the lot in one go
-cp Adafruit_Blinka-8.31.0/src/adafruit_blinka/microcontroller/generic_micropython/* ./adafruit_blinka/microcontroller/generic_micropython/
+cp Adafruit_Blinka-*/src/adafruit_blinka/microcontroller/generic_micropython/* ./adafruit_blinka/microcontroller/generic_micropython/
 
 # Next is the platformdetect directory. We need
 # board.py  
@@ -86,15 +87,15 @@ cp -R Adafruit_Python_PlatformDetect-*/adafruit_platformdetect/* ./adafruit_plat
 # __init__.py
 # spi_device.py
 # Which again is everything in the source directory so we can do a wildcard copy
-cp adafruit-circuitpython-bundle-py-20240127/lib/adafruit_bus_device/* adafruit_bus_device/
+cp adafruit-circuitpython-bundle-*/lib/adafruit_bus_device/* adafruit_bus_device/
 
 # That's everything. Now we can clean up
 rm -f Adafruit_Blinka-*.tar.gz
 rm -f Adafruit_Python_PlatformDetect*.tar.gz
-rm -f adafruit-circuitpython-bundle-py-*.zip
-rm -rf Adafruit_Blinka-8.31.0 
-rm -rf adafruit-circuitpython-bundle-py-20240127
-rm -rf Adafruit_Python_PlatformDetect-3.59.0
+rm -f adafruit-circuitpython-bundle-*.zip
+rm -rf Adafruit_Blinka-*
+rm -rf adafruit-circuitpython-bundle-*
+rm -rf Adafruit_Python_PlatformDetect-*
 
 # That's all folks!!
 exit 0
