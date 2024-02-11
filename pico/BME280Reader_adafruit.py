@@ -1,7 +1,7 @@
+from time import sleep
 from adafruit_bme280 import basic as adafruit_bme280
 from busio import I2C
 from microcontroller import pin
-from time import sleep
 
 class BME280Reader:    
     def __init__(self, sda_pin, scl_pin):
@@ -57,6 +57,6 @@ if __name__ == "__main__":
     while True:
         (temp,pressure,humidity) = my_bme.get_values()
         print(f'Temp: {temp:.02f}{chr(176)}C Humidity: {humidity:.02f}% Pressure: {pressure:.02f}hPa')
-        time.sleep(1)
+        sleep(1)
         
     
