@@ -1,0 +1,8 @@
+FROM httpd:2.4.54
+
+ADD index.html /usr/local/apache2/htdocs/
+ADD weatherstation.css /usr/local/apache2/htdocs/
+ADD weatherstation.js /usr/local/apache2/htdocs/
+ADD jquery.textfill.min.js /usr/local/apache2/htdocs/
+EXPOSE 80
+CMD ["httpd-foreground"]
