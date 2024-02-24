@@ -6,6 +6,7 @@ from socket import socket
 from time import localtime
 from Wifi import Wifi
 from machine import ADC
+from RSFSJTN01 import RSFSJTN01
 import os
 
 class WeatherServer:
@@ -29,7 +30,8 @@ class WeatherServer:
         self.colourcalc = ColourCalc()
         # Set up the wind speed detector
         self.wind_speed_pin = wind_speed_pin
-        #self.wind_speed_sensor = RSFSJTN01(self.wind_speed_pin)
+        self.wind_speed_sensor = RSFSJTN01(self.wind_speed_pin)
+        #RSFSJTN01(self.wind_speed_pin)
         # Set up the internal server
         address = (self.ip, self.port)
         self.connection = socket()
@@ -44,14 +46,14 @@ class WeatherServer:
     
     def get_data(self):
         pico_temp = self.get_temperature()
-        pico_temp = 0
+        #pico_temp = 0
         (year, month, mday, hour, minute, second, weekday, yearday) = localtime() # get struct_time
         time_string = f'{year}/{month:02}/{mday:02}-{hour:02}:{minute:02}:{second:02}'
         (temp,pressure,humidity) = self.bme280_reader.get_values()
         #Derive colour to represent temperature
         (red, green, blue) = self.colourcalc.calc_colour(int(temp))
-        #wind_speed = self.wind_speed_sensor.get_wind_speed()
-        wind_speed = 0
+        wind_speed = self.wind_speed_sensor.get_wind_speed()
+        #wind_speed = 0
         #Template JSON
         data = f"""{{
 "pico_temperature": "{pico_temp}",
@@ -126,8 +128,9 @@ Access-Control-Allow-Origin: *
 # Use to test
 if __name__ == "__main__":
     try:
-        weather_server = WeatherServer('pool.ntp.org', 80, 0, 1, 2)
+        weather_server = WeatherServer('pool.ntp.org', 80, 0, 1, 16)
         while True:
             weather_server.serve()
     except KeyboardInterrupt:
+        weather_server.wind_speed_sensor.end()
         machine.reset()
