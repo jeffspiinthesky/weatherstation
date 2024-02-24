@@ -1,10 +1,12 @@
 from BME280Reader import BME280Reader
+from RSFSJTN01 import RSFSJTN01
 from colourcalc import ColourCalc
 from flask import Flask, flash, request, Response, redirect, url_for, render_template
 import json
 import time
 
 bme280_reader = BME280Reader()
+wind_speed_sensor = RSFSJTN01(21)
 colourcalc = ColourCalc()
 
 app = Flask(__name__, instance_relative_config=True)
@@ -17,6 +19,7 @@ def get_data():
     print(f'Temp: {temp:.2f} Humidity: {humidity:.2f} Pressure: {pressure:.2f}')
     #Derive colour to represent temperature
     (red, green, blue) = colourcalc.calc_colour(int(temp))
+    wind_speed = wind_speed_sensor.get_wind_speed()
     #Template JSON
     data = f"""{{
 "time": "{time_string}",
@@ -24,7 +27,7 @@ def get_data():
 "tempcolour": "#{red:02x}{green:02x}{blue:02x}",
 "pressure": "{pressure:.2f}",
 "humidity": "{humidity:.2f}",
-"wind_speed": "{0}"
+"wind_speed": "{wind_speed:.2f}"
 }}"""
     bytes = json.dumps(data)
     return Response(data,mimetype='application/json')
@@ -36,3 +39,4 @@ def serve():
 # Use to test
 if __name__ == "__main__":
     app.run()
+    wind_speed_sensor.end()
