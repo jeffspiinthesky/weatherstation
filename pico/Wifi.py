@@ -12,7 +12,8 @@ class Wifi:
             f = open('./wifi_creds.json')
             self.data = load(f)
             for credentials in self.data['Credentials']:
-                print(f'SSID: {credentials['SSID']} Password: {credentials['Password']}')
+                #print(f'SSID: {credentials['SSID']} Password: {credentials['Password']}')
+                print(f'SSID: ******* Password: *******')
         except Exception as e:
             print(f'Exception: {e}')
         self.wlan = None
@@ -21,7 +22,7 @@ class Wifi:
         # Continually loop until a connection is established
         while True:
             for credentials in self.data['Credentials']:
-                print(f'Attempting to connect to {credentials['SSID']}')
+                print(f'Attempting to connect to *********')
                 retry_count = 0
                 self.wlan = WLAN(STA_IF)
                 self.wlan.active(True)
