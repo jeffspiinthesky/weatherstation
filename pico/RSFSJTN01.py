@@ -1,6 +1,7 @@
 from machine import Pin
 from time import sleep
 from _thread import start_new_thread,allocate_lock
+import gc
 
 class RSFSJTN01():
     wind_speed = 0
@@ -62,5 +63,6 @@ if __name__ == "__main__":
         while True:
             sleep(1)
             print(f'Returned wind speed: {wind_speed_sensor.get_wind_speed()}mph')
+            gc.collect()
     except KeyboardInterrupt:
         wind_speed_sensor.end()
