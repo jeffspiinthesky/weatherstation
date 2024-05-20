@@ -1,13 +1,14 @@
 #from RSFSJTN01 import RSFSJTN01
-from BME280Reader_adafruit import BME280Reader
+from BME280Reader import BME280Reader
 from NtpClient import NtpClient
 from colourcalc import ColourCalc
-from socket import socket
+from socket import socket,AF_INET,SOCK_STREAM
 from time import localtime
 from Wifi import Wifi
 from machine import ADC
 from RSFSJTN01 import RSFSJTN01
-import os
+from os import stat
+from gc import collect
 
 class WeatherServer:
     def __init__(self, ntp_host, port, bme280_sda, bme280_scl, wind_speed_pin):
@@ -74,7 +75,7 @@ Access-Control-Allow-Origin: *
         return str(response)
     
     def send_file(self,filename,mime_type,client):
-        size = os.stat(filename)[6]
+        size = stat(filename)[6]
         print(f'Stats: {size}')
         file = open(filename,'r')
         data = file.read()
@@ -87,48 +88,68 @@ Access-Control-Allow-Origin: *
         print(response)
         client.send(response)        
 
+    def test_connectivity(self):
+        try:
+            test_socket = socket(AF_INET,SOCK_STREAM)
+            if test_socket.connect(('192.168.0.1',80)):
+                test_socket.close()
+                return True
+        except Exception as e:
+            print(f'Test connection exception: {e}')
+            return False
+        
     def serve(self):
         while True:
             print('Waiting for request')
-            if( self.wifi_connection.is_connected() == False ):
-                self.wifi_connection = Wifi()
-                self.ip = self.wifi_connection.connect()
-                address = (self.ip, self.port)
-                self.connection = socket()
-                self.connection.bind(address)
-                self.connection.listen(1)
-            print(self.connection)
-            client = self.connection.accept()[0]
-            print(client)
-            request = client.recv(1024)
-            request = str(request)
-            print(request)
             try:
-                request = request.split()[1]
+                # Test connectivity
+                collect()
+                if( (self.test_connectivity() == True) or (self.wifi_connection.is_connected() == False) ):
+                    if self.wifi_connection.is_connected:
+                        self.wifi_connection.disconnect()
+                    self.wifi_connection = Wifi()
+                    self.ip = self.wifi_connection.connect()
+                    address = (self.ip, self.port)
+                    self.connection = socket()
+                    self.connection.settimeout(2)
+                    self.connection.bind(address)
+                    self.connection.listen(10)
+                print(f'Connection: {self.connection}')
+                client_connection = self.connection.accept()
+                print(f'Client connection: {client_connection}')
+                client = client_connection[0]
+                print(f'Client: {client}')
+                request = client.recv(1024)
+                request = str(request)
                 print(request)
-                if request == '/data':
-                    client.send(self.get_data())
-                elif request == '/':
-                    self.send_file('webpage/index.html','text/html',client)
-                elif request == '/jquery.textfill.min.js':
-                    self.send_file('webpage/jquery.textfill.min.js','text/javascript',client)
-                elif request == '/weatherstation.css':
-                    self.send_file('webpage/weatherstation.css','text/css',client)
-                elif request == '/weatherstation.js':
-                    self.send_file('webpage/weatherstation.js','text/javascript',client)
-                else:
-                    response = f"""HTTP/1.1 404 Not found"""
-                    client.send(response)        
-            except IndexError:
-                pass
-            print('Data sent - closing')
-            client.close()
-            print('Closed')
+                try:
+                    request = request.split()[1]
+                    print(request)
+                    if request == '/data':
+                        client.send(self.get_data())
+                    elif request == '/':
+                        self.send_file('webpage/index.html','text/html',client)
+                    elif request == '/jquery.textfill.min.js':
+                        self.send_file('webpage/jquery.textfill.min.js','text/javascript',client)
+                    elif request == '/weatherstation.css':
+                        self.send_file('webpage/weatherstation.css','text/css',client)
+                    elif request == '/weatherstation.js':
+                        self.send_file('webpage/weatherstation.js','text/javascript',client)
+                    else:
+                        response = f"""HTTP/1.1 404 Not found"""
+                        client.send(response)        
+                except IndexError:
+                    pass
+                print('Data sent - closing')
+                client.close()
+                print('Closed')
+            except Exception as e:
+                print(f'Exception: {e}')
             
 # Use to test
 if __name__ == "__main__":
     try:
-        weather_server = WeatherServer('pool.ntp.org', 80, 0, 1, 16)
+        weather_server = WeatherServer('pool.ntp.org', 80, 20, 21, 2)
         while True:
             weather_server.serve()
     except KeyboardInterrupt:
